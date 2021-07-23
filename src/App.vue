@@ -1,60 +1,82 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+  <v-container>
+    <h1>
+      Tester Validasi Vuetify
+    </h1>
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-text-field
+        v-model="name"
+        :counter="10"
+        :rules="nameRules"
+        label="Name"
+        required
+      ></v-text-field>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      <v-text-field
+        v-model="email"
+        :rules="emailRules"
+        label="E-mail"
+        required
+      ></v-text-field>
 
-      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="kode"
+        :counter="10"
+        :rules="[v => !!v || 'Item is required']"
+        type="number"
+        label="Kode Pos"
+        required
+      ></v-text-field>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+
+      <v-btn color="#4CAF50" class="send" @click="validate">
+        Validate
       </v-btn>
-    </v-app-bar>
 
-    <v-main>
-      <HelloWorld/>
-    </v-main>
-  </v-app>
+      <v-btn color="#FF5252" class="mr-4" @click="reset">
+        Reset Form
+      </v-btn>
+    </v-form>
+  </v-container>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+// import Modal from "./components/Modal.vue";
 
 export default {
-  name: 'App',
+  name: "App",
 
-  components: {
-    HelloWorld,
-  },
+  // components: {
+  //   Modal,
+  // },
 
   data: () => ({
-    //
+    name: "",
+    nameRules: [
+      (v) => !!v || "Name is required",
+      (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
+    ],
+    email: "",
+    emailRules: [
+      (v) => !!v || "E-mail is required",
+      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+    ],
+
+    kode: "",
   }),
+
+  methods: {
+    validate() {
+      this.$refs.form.validate();
+    },
+    reset() {
+      this.$refs.form.reset();
+    },
+  },
 };
 </script>
+<style>
+.send {
+  margin-right: 4px;
+}
+</style>
