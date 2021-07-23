@@ -5,7 +5,10 @@
 
       <div class="modal__dialog">
         <div class="modal__header">
-          <slot name="header"/>
+          <!-- <slot name="header"/> -->
+          <h1>
+              Upsss, Anda tidak bisa submit !
+          </h1>
           <button type="button" class="modal__close" @click="closeModal()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
               <path
@@ -17,12 +20,10 @@
         </div>
 
         <div class="modal__body">
-          <slot name="body"/>
+            <h2>Silahkan isi form sesuai ketentuan !</h2>
+          <!-- <slot name="body"/> -->
         </div>
 
-        <div class="modal__footer">
-          <slot name="footer"/>
-        </div>
       </div>
     </div>
   </transition>
@@ -73,6 +74,7 @@ export default {
     background-color: #ffffff;
     position: relative;
     width: 600px;
+    height: 200px;
     margin: 50px auto;
     display: flex;
     flex-direction: column;
@@ -94,6 +96,7 @@ export default {
   }
   &__body {
     padding: 10px 20px 10px;
+    margin-top: 30px;
     overflow: auto;
     display: flex;
     flex-direction: column;

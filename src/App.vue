@@ -37,18 +37,20 @@
         Reset Form
       </v-btn>
     </v-form>
+    <modal ref="modalName">
+    </modal>
   </v-container>
 </template>
 
 <script>
-// import Modal from "./components/Modal.vue";
+import Modal from "./components/Modal.vue";
 
 export default {
   name: "App",
 
-  // components: {
-  //   Modal,
-  // },
+  components: {
+    Modal,
+  },
 
   data: () => ({
     name: "",
@@ -67,7 +69,15 @@ export default {
 
   methods: {
     validate() {
-      this.$refs.form.validate();
+      var vm = this;
+      if(!this.$refs.form.validate()) {
+        this.$refs.modalName.openModal();
+        return
+      }
+
+      console.log("name", vm.name);
+      console.log("email", vm.email);
+      console.log("kode", vm.kode);
     },
     reset() {
       this.$refs.form.reset();
