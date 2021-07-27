@@ -144,8 +144,8 @@ export default {
     changePassword() {
       var vm = this;
       if (vm.validation() == false) {
-        alert("tidak boleh kosong")
-        // this.$refs.modalName.openModal();
+        // alert("tidak boleh kosong")
+        this.$refs.modalName.openModal();
         return
       }
         console.log("passwordasu", vm.sandiBaru);
