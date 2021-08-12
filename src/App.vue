@@ -36,7 +36,6 @@
         Reset Form
       </v-btn>
     </v-form>
-    <modal ref="modalName"> </modal>
 
     <h1 class="form2">
       Input validasi without vuetify
@@ -70,6 +69,33 @@
     <v-btn color="#4544e4" @click="changePassword()" dark class="btn-form">
       Ubah
     </v-btn>
+    <div>
+      <v-btn class="mt-5" @click="next">
+        go to tester
+      </v-btn>
+    </div>
+    <modal ref="modalName">
+      <template v-slot:header>
+        <h3>Apakah anda yakin melanjutkan proses verifikasi produk ini?</h3>
+      </template>
+
+      <template v-slot:body>
+        <h3>
+          Keterangan ini diisi dievaluator akan diteruskan ke kasie
+        </h3>
+      </template>
+
+      <template v-slot:footer>
+        <div>
+          <v-btn color="orange darken-2" class="ma-2" @click="$refs.modalName.closeModal()">
+              batal
+          </v-btn>
+          <v-btn color="red" class="ma-2" @click="submit">
+            next
+          </v-btn>
+        </div>
+      </template>
+    </modal>
   </v-container>
 </template>
 
@@ -134,10 +160,10 @@ export default {
         vm.errUlangiSandiBaru = "";
       }
 
-      if(vm.sandiBaru != "" && vm.ulangiSandiBaru != "") {
-        return true
+      if (vm.sandiBaru != "" && vm.ulangiSandiBaru != "") {
+        return true;
       } else {
-        return false
+        return false;
       }
     },
 
@@ -146,15 +172,32 @@ export default {
       if (vm.validation() == false) {
         // alert("tidak boleh kosong")
         this.$refs.modalName.openModal();
-        return
+        return;
       }
-        console.log("passwordasu", vm.sandiBaru);
-        console.log("ulang passsasas", vm.ulangiSandiBaru);
-        alert("berhasil submit")
-      
+      console.log("passwordasu", vm.sandiBaru);
+      console.log("ulang passsasas", vm.ulangiSandiBaru);
+      alert("berhasil submit");
     },
     reset() {
       this.$refs.form.reset();
+    },
+
+    next() {
+      this.$refs.modalName.openModal();
+      // alert("Apakah anda yakin melanjutkan proses verifikasi produk ini?")
+      //  this.$router.push({
+      //   path: "/tester",
+      // });
+
+    },
+
+    submit() {
+      const vm = this;
+
+      vm.$router.push({
+        path: "/tester",
+      });
+      vm.$refs.modalName.closeModal();
     },
   },
 };
