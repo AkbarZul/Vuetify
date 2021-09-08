@@ -28,6 +28,19 @@
         required
       ></v-text-field>
 
+      <v-file-input
+        label="Browse"
+        outlined
+        dense
+        v-model="file"
+        ref="file"
+        @change="uploadDokumen('file', accept_file)"
+      ></v-file-input>
+      <p>{{file}}</p>
+      <div v-if="errFile" class="error-message mt-minus-10">
+        {{ errMsgFile }}
+      </div>
+
       <v-btn color="#4CAF50" class="send" @click="validate">
         Validate
       </v-btn>
@@ -74,6 +87,13 @@
         go to tester
       </v-btn>
     </div>
+    <v-label>Test type</v-label>
+    <input
+      type="number"
+      class="custom-input bpom-mb-input"
+      v-model="tester"
+      maxlength="5"
+    />
     <modal ref="modalName">
       <template v-slot:header>
         <h3>Apakah anda yakin melanjutkan proses verifikasi produk ini?</h3>
@@ -87,8 +107,12 @@
 
       <template v-slot:footer>
         <div>
-          <v-btn color="orange darken-2" class="ma-2" @click="$refs.modalName.closeModal()">
-              batal
+          <v-btn
+            color="orange darken-2"
+            class="ma-2"
+            @click="$refs.modalName.closeModal()"
+          >
+            batal
           </v-btn>
           <v-btn color="red" class="ma-2" @click="submit">
             next
@@ -123,11 +147,20 @@ export default {
 
     kode: "",
 
+    max: 5,
+
     // without vuetify
     sandiBaru: "",
     errSandiBaru: "",
     ulangiSandiBaru: "",
     errUlangiSandiBaru: "",
+    tester: "",
+    file: null,
+    accept_file: ["application/x-zip-compressed", "image/jpg", "image/png", "image/jpeg", "application/pdf", "image/bmp", "image/gif", 
+                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",  "application/msword", "application/vnd.ms-excel", 
+                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+    errFile: false,
+    errMsgFile: null
   }),
 
   methods: {
@@ -188,7 +221,6 @@ export default {
       //  this.$router.push({
       //   path: "/tester",
       // });
-
     },
 
     submit() {
@@ -198,6 +230,32 @@ export default {
         path: "/tester",
       });
       vm.$refs.modalName.closeModal();
+    },
+    uploadDokumen(id, accept_file) {
+      const me = this;
+      if (me[id]) {
+        if (!accept_file.includes(me[id].type)) {
+          me[id] = null;
+          // alert("file tidak sesuai type")
+          me.$refs[id].reset();
+          me.errFile = true;
+          me.errMsgFile = "file tidak sesuai"
+        } else {
+          me.errFile = false;
+          me.errMsgFile = null
+        }
+      }
+      console.log("hasil");
+    },
+    validateFile(id, accept_file) {
+      const me = this;
+      if (me[id]) {
+        if (!accept_file.includes(me[id].type)) {
+          me[id] = null;
+          me.errFile = "file tidak sesuai type";
+          me.$refs[id].reset();
+        }
+      }
     },
   },
 };
